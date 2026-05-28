@@ -353,6 +353,77 @@
         .footer a { color: var(--gray-300); text-decoration: none; }
         .footer a:hover { color: white; }
 
+
+        /* Calendar Widget */
+        .calendar-widget {
+            border: 1px solid var(--gray-300);
+            border-radius: 10px;
+            padding: 16px;
+            background: var(--white);
+        }
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .cal-nav {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-700);
+            transition: all 0.2s;
+        }
+        .cal-nav:hover { border-color: var(--primary); color: var(--primary); }
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+        .cal-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .cal-day {
+            width: 100%;
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 8px;
+            background: none;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cal-day:hover:not(.disabled):not(.empty) { background: var(--primary-light); color: var(--primary-dark); }
+        .cal-day.selected { background: var(--primary); color: white; font-weight: 600; }
+        .cal-day.disabled { color: var(--gray-300); cursor: not-allowed; text-decoration: line-through; }
+        .cal-day.empty { cursor: default; }
+        .cal-day.today { border: 2px solid var(--primary); }
+        .cal-selected {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--gray-100);
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        .cal-selected strong { color: var(--primary); }
         @media (max-width: 768px) {
             .contact-container { grid-template-columns: 1fr; gap: 40px; }
             .page-header h1 { font-size: 28px; }
@@ -444,45 +515,60 @@
             <h3>Request a Treatment Plan</h3>
             <p>Fill in your details and we'll get back to you with options, pricing, and next steps.</p>
 
-            <form id="contactForm" action="https://forminit.com/f/hn13f590iop" method="POST" onsubmit="handleSubmit(event)">
+            <form id="contactForm">
                 <div class="form-row">
                     <div class="form-group">
                         <label>Full Name <span class="required">*</span></label>
-                        <input type="text" name="name" placeholder="John Smith" required>
+                        <input type="text" name="fi-sender-firstName" placeholder="John Smith" required>
                     </div>
                     <div class="form-group">
                         <label>Email <span class="required">*</span></label>
-                        <input type="email" name="email" placeholder="john@example.com" required>
+                        <input type="email" name="fi-sender-email" placeholder="john@example.com" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Country</label>
-                        <select name="country">
+                        <select name="fi-text-country" id="countrySelect" onchange="updatePhoneCode()">
                             <option value="">Select your country</option>
-                            <option>China (living abroad)</option>
-                            <option>United States</option>
-                            <option>United Kingdom</option>
-                            <option>Canada</option>
-                            <option>Australia</option>
-                            <option>Germany</option>
-                            <option>France</option>
-                            <option>Japan</option>
-                            <option>South Korea</option>
-                            <option>Singapore</option>
-                            <option>Other</option>
+                            <option value="US" data-code="+1">United States</option>
+                            <option value="GB" data-code="+44">United Kingdom</option>
+                            <option value="CA" data-code="+1">Canada</option>
+                            <option value="AU" data-code="+61">Australia</option>
+                            <option value="DE" data-code="+49">Germany</option>
+                            <option value="FR" data-code="+33">France</option>
+                            <option value="JP" data-code="+81">Japan</option>
+                            <option value="KR" data-code="+82">South Korea</option>
+                            <option value="SG" data-code="+65">Singapore</option>
+                            <option value="NZ" data-code="+64">New Zealand</option>
+                            <option value="IE" data-code="+353">Ireland</option>
+                            <option value="NL" data-code="+31">Netherlands</option>
+                            <option value="SE" data-code="+46">Sweden</option>
+                            <option value="NO" data-code="+47">Norway</option>
+                            <option value="DK" data-code="+45">Denmark</option>
+                            <option value="IT" data-code="+39">Italy</option>
+                            <option value="ES" data-code="+34">Spain</option>
+                            <option value="RU" data-code="+7">Russia</option>
+                            <option value="IN" data-code="+91">India</option>
+                            <option value="MY" data-code="+60">Malaysia</option>
+                            <option value="TH" data-code="+66">Thailand</option>
+                            <option value="AE" data-code="+971">UAE</option>
+                            <option value="OTHER" data-code="">Other</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Phone / WhatsApp</label>
-                        <input type="tel" name="phone" placeholder="+1 234 567 890">
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="phoneCode" style="width:70px; text-align:center; background:var(--gray-100); color:var(--gray-700); font-weight:600;" readonly placeholder="—" tabindex="-1">
+                            <input type="tel" name="fi-text-phone" id="phoneInput" placeholder="Phone number" style="flex:1;">
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Service Needed <span class="required">*</span></label>
-                    <select name="service" required>
+                    <select name="fi-text-service" required>
                         <option value="">What are you looking for?</option>
                         <option>Specialist Consultation (Dental, Eye, Orthopedic, etc.)</option>
                         <option>Comprehensive Health Screening</option>
@@ -495,17 +581,29 @@
 
                 <div class="form-group">
                     <label>Tell Us About Your Condition <span class="required">*</span></label>
-                    <textarea name="condition" placeholder="Please describe your medical condition, symptoms, or what treatment you're seeking. Include any relevant history, current medications, or urgency level." required></textarea>
+                    <textarea name="fi-text-condition" placeholder="Please describe your medical condition, symptoms, or what treatment you're seeking. Include any relevant history, current medications, or urgency level." required></textarea>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Preferred Travel Date</label>
-                        <input type="text" name="travel_date" placeholder="e.g. June 2026 / Flexible">
+                        <div id="calendarWidget" class="calendar-widget">
+                            <div class="cal-header">
+                                <button type="button" class="cal-nav" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                                <span id="calMonthYear"></span>
+                                <button type="button" class="cal-nav" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                            <div class="cal-weekdays">
+                                <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+                            </div>
+                            <div class="cal-days" id="calDays"></div>
+                            <div class="cal-selected" id="calSelected">No date selected</div>
+                        </div>
+                        <input type="hidden" name="fi-text-travel_date" id="travelDateInput">
                     </div>
                     <div class="form-group">
                         <label>How Did You Find Us?</label>
-                        <select name="source">
+                        <select name="fi-text-source">
                             <option value="">Select</option>
                             <option>Instagram</option>
                             <option>TikTok</option>
@@ -543,40 +641,147 @@
     </footer>
 
     <script>
-        async function handleSubmit(e) {
-            e.preventDefault();
-            const form = e.target;
-            const btn = form.querySelector('.btn-submit');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
-            btn.disabled = true;
+        // ===== Phone Code Auto-fill =====
+        function updatePhoneCode() {
+            var select = document.getElementById('countrySelect');
+            var codeInput = document.getElementById('phoneCode');
+            var selected = select.options[select.selectedIndex];
+            var code = selected.getAttribute('data-code') || '';
+            codeInput.value = code;
+        }
 
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form),
-                    headers: { 'Accept': 'application/json' }
-                });
+        // ===== Calendar Widget =====
+        var calCurrentMonth = new Date(2026, 5, 1);
+        var selectedDate = null;
 
-                if (response.ok) {
-                    showSuccess();
-                } else {
-                    alert('Something went wrong. Please try emailing us directly at hello@pandacare.health');
-                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send My Request';
-                    btn.disabled = false;
+        // Dates that are fully booked - add dates here as 'YYYY-MM-DD'
+        var bookedDates = [];
+
+        function renderCalendar() {
+            var year = calCurrentMonth.getFullYear();
+            var month = calCurrentMonth.getMonth();
+            var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+            document.getElementById('calMonthYear').textContent = monthNames[month] + ' ' + year;
+
+            var firstDay = new Date(year, month, 1).getDay();
+            firstDay = firstDay === 0 ? 6 : firstDay - 1;
+            var daysInMonth = new Date(year, month + 1, 0).getDate();
+            var today = new Date();
+            today.setHours(0,0,0,0);
+            var minDate = new Date(2026, 5, 1);
+
+            var container = document.getElementById('calDays');
+            container.innerHTML = '';
+
+            for (var i = 0; i < firstDay; i++) {
+                var empty = document.createElement('span');
+                empty.className = 'cal-day empty';
+                container.appendChild(empty);
+            }
+
+            for (var d = 1; d <= daysInMonth; d++) {
+                var dateObj = new Date(year, month, d);
+                var mm = String(month + 1).padStart(2, '0');
+                var dd = String(d).padStart(2, '0');
+                var dateStr = year + '-' + mm + '-' + dd;
+
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'cal-day';
+                btn.textContent = d;
+                btn.setAttribute('data-date', dateStr);
+
+                var isDisabled = (dateObj < today) || (dateObj < minDate) || (bookedDates.indexOf(dateStr) !== -1);
+
+                if (isDisabled) {
+                    btn.classList.add('disabled');
+                    btn.disabled = true;
                 }
-            } catch (error) {
-                alert('Network error. Please check your connection and try again.');
-                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send My Request';
-                btn.disabled = false;
+                if (dateObj.getTime() === today.getTime()) {
+                    btn.classList.add('today');
+                }
+                if (selectedDate === dateStr) {
+                    btn.classList.add('selected');
+                }
+
+                container.appendChild(btn);
             }
         }
 
-        function showSuccess() {
-            document.getElementById('contactForm').style.display = 'none';
-            document.querySelector('.contact-form-wrapper h3').style.display = 'none';
-            document.querySelector('.contact-form-wrapper > p').style.display = 'none';
-            document.getElementById('formSuccess').classList.add('show');
+        // Event delegation for calendar clicks
+        document.getElementById('calDays').addEventListener('click', function(e) {
+            var btn = e.target;
+            if (btn.classList.contains('cal-day') && !btn.classList.contains('disabled') && !btn.classList.contains('empty')) {
+                var dateStr = btn.getAttribute('data-date');
+                if (dateStr) {
+                    selectedDate = dateStr;
+                    document.getElementById('travelDateInput').value = dateStr;
+                    var parts = dateStr.split('-');
+                    var mNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    document.getElementById('calSelected').innerHTML = 'Selected: <strong>' + parseInt(parts[2]) + ' ' + mNames[parseInt(parts[1])-1] + ' ' + parts[0] + '</strong>';
+                    renderCalendar();
+                }
+            }
+        });
+
+        function changeMonth(delta) {
+            calCurrentMonth.setMonth(calCurrentMonth.getMonth() + delta);
+            var minMonth = new Date(2026, 5, 1);
+            if (calCurrentMonth < minMonth) {
+                calCurrentMonth = new Date(2026, 5, 1);
+            }
+            renderCalendar();
         }
+
+        renderCalendar();
+
+        // ===== Form Submission =====
+        (function() {
+            var FORM_ID = 'hn13f590iop';
+            var form = document.getElementById('contactForm');
+            if (!form) return;
+            var btn = form.querySelector('.btn-submit');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                var phoneCode = document.getElementById('phoneCode').value;
+                var phoneInput = document.getElementById('phoneInput');
+                if (phoneCode && phoneInput.value && phoneInput.value.indexOf('+') !== 0) {
+                    phoneInput.value = phoneCode + ' ' + phoneInput.value;
+                }
+
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                btn.disabled = true;
+
+                var formData = new FormData(form);
+
+                fetch('https://forminit.com/f/' + FORM_ID, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        document.getElementById('contactForm').style.display = 'none';
+                        document.querySelector('.contact-form-wrapper h3').style.display = 'none';
+                        document.querySelector('.contact-form-wrapper > p').style.display = 'none';
+                        document.getElementById('formSuccess').classList.add('show');
+                    } else {
+                        throw new Error('Status: ' + response.status);
+                    }
+                })
+                .catch(function(err) {
+                    alert('Something went wrong. Please try emailing us directly at hello@pandacare.health');
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send My Request';
+                    btn.disabled = false;
+                    if (phoneCode && phoneInput.value.indexOf(phoneCode) === 0) {
+                        phoneInput.value = phoneInput.value.replace(phoneCode + ' ', '');
+                    }
+                });
+            });
+        })();
     </script>
 </body>
 </html>

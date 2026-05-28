@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us — PandaCare | Start Your Medical Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0D9488;
+            --primary-dark: #0F766E;
+            --primary-light: #CCFBF1;
+            --accent: #F59E0B;
+            --dark: #0F172A;
+            --gray-900: #1E293B;
+            --gray-700: #334155;
+            --gray-500: #64748B;
+            --gray-300: #CBD5E1;
+            --gray-100: #F1F5F9;
+            --white: #FFFFFF;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            color: var(--dark);
+            line-height: 1.6;
+            background: var(--white);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-100);
+            padding: 16px 0;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta {
+            background: var(--primary);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--primary-dark); }
+
+        /* Page Header */
+        .page-header {
+            padding: 140px 24px 60px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--primary-light) 0%, var(--white) 100%);
+        }
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+        .page-header p {
+            font-size: 18px;
+            color: var(--gray-500);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Contact Layout */
+        .contact-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 24px 100px;
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 60px;
+        }
+
+        /* Contact Info Side */
+        .contact-info h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .contact-info > p {
+            color: var(--gray-500);
+            font-size: 15px;
+            margin-bottom: 32px;
+        }
+
+        .info-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .info-card .icon {
+            width: 44px;
+            height: 44px;
+            background: var(--primary-light);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .info-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .info-card p {
+            color: var(--gray-500);
+            font-size: 14px;
+        }
+        .info-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .info-card a:hover { text-decoration: underline; }
+
+        .social-links {
+            margin-top: 36px;
+            padding-top: 28px;
+            border-top: 1px solid var(--gray-100);
+        }
+        .social-links h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        .social-icons {
+            display: flex;
+            gap: 12px;
+        }
+        .social-icons a {
+            width: 44px;
+            height: 44px;
+            background: var(--gray-100);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-700);
+            font-size: 18px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .social-icons a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Form Side */
+        .contact-form-wrapper {
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: 20px;
+            padding: 40px;
+        }
+        .contact-form-wrapper h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .contact-form-wrapper > p {
+            color: var(--gray-500);
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+        }
+        .form-group label .required {
+            color: #EF4444;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: var(--font);
+            color: var(--dark);
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: var(--white);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--gray-300);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .form-note {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .form-note i { color: var(--primary); }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13,148,136,0.3);
+        }
+        .btn-submit:active { transform: translateY(0); }
+
+        /* Success state */
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .form-success.show { display: block; }
+        .form-success .check-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 28px;
+            margin: 0 auto 16px;
+        }
+        .form-success h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .form-success p {
+            color: var(--gray-500);
+            font-size: 15px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: var(--gray-300);
+            padding: 40px 24px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer a { color: var(--gray-300); text-decoration: none; }
+        .footer a:hover { color: white; }
+
+        @media (max-width: 768px) {
+            .contact-container { grid-template-columns: 1fr; gap: 40px; }
+            .page-header h1 { font-size: 28px; }
+            .nav-links { display: none; }
+            .form-row { grid-template-columns: 1fr; }
+            .contact-form-wrapper { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                PandaCare
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#why-china">Why China</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html" style="color: var(--primary);">Contact</a></li>
+            </ul>
+            <a href="contact.html" class="nav-cta">Get Free Consultation</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Get Your Free Consultation</h1>
+        <p>Tell us about your medical needs and we'll create a personalized treatment plan within 24 hours</p>
+    </section>
+
+    <!-- Contact Content -->
+    <div class="contact-container">
+        <!-- Left: Contact Info -->
+        <div class="contact-info">
+            <h2>Let's Talk</h2>
+            <p>Reach out through any channel — we respond within 12 hours, usually much faster.</p>
+
+            <div class="info-card">
+                <div class="icon"><i class="fa-solid fa-envelope"></i></div>
+                <div>
+                    <h4>Email</h4>
+                    <p><a href="mailto:hello@pandacare.health">hello@pandacare.health</a></p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <div>
+                    <h4>WhatsApp</h4>
+                    <p><a href="#">+86 xxx xxxx xxxx</a></p>
+                    <p>Quick questions & real-time updates</p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="icon"><i class="fa-solid fa-video"></i></div>
+                <div>
+                    <h4>Video Consultation</h4>
+                    <p>Free 15-min video call to discuss your needs</p>
+                    <p><a href="#">Book a call →</a></p>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="icon"><i class="fa-solid fa-clock"></i></div>
+                <div>
+                    <h4>Response Time</h4>
+                    <p>Within 12 hours (usually 2-4 hours)</p>
+                    <p>Mon–Sun, we're always available</p>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Contact Form -->
+        <div class="contact-form-wrapper">
+            <h3>Request a Treatment Plan</h3>
+            <p>Fill in your details and we'll get back to you with options, pricing, and next steps.</p>
+
+            <form id="contactForm" action="https://forminit.com/f/hn13f590iop" method="POST" onsubmit="handleSubmit(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name <span class="required">*</span></label>
+                        <input type="text" name="name" placeholder="John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" name="email" placeholder="john@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select name="country">
+                            <option value="">Select your country</option>
+                            <option>China (living abroad)</option>
+                            <option>United States</option>
+                            <option>United Kingdom</option>
+                            <option>Canada</option>
+                            <option>Australia</option>
+                            <option>Germany</option>
+                            <option>France</option>
+                            <option>Japan</option>
+                            <option>South Korea</option>
+                            <option>Singapore</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone / WhatsApp</label>
+                        <input type="tel" name="phone" placeholder="+1 234 567 890">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Service Needed <span class="required">*</span></label>
+                    <select name="service" required>
+                        <option value="">What are you looking for?</option>
+                        <option>Specialist Consultation (Dental, Eye, Orthopedic, etc.)</option>
+                        <option>Comprehensive Health Screening</option>
+                        <option>Traditional Chinese Medicine / Rehabilitation</option>
+                        <option>Surgery / Inpatient Treatment</option>
+                        <option>Multiple Services</option>
+                        <option>Not sure — need advice</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tell Us About Your Condition <span class="required">*</span></label>
+                    <textarea name="condition" placeholder="Please describe your medical condition, symptoms, or what treatment you're seeking. Include any relevant history, current medications, or urgency level." required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Preferred Travel Date</label>
+                        <input type="text" name="travel_date" placeholder="e.g. June 2026 / Flexible">
+                    </div>
+                    <div class="form-group">
+                        <label>How Did You Find Us?</label>
+                        <select name="source">
+                            <option value="">Select</option>
+                            <option>Instagram</option>
+                            <option>TikTok</option>
+                            <option>YouTube</option>
+                            <option>Google Search</option>
+                            <option>Friend / Referral</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-note">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Your information is confidential and only used to prepare your treatment plan.
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Send My Request
+                </button>
+            </form>
+
+            <!-- Success Message -->
+            <div class="form-success" id="formSuccess">
+                <div class="check-icon"><i class="fa-solid fa-check"></i></div>
+                <h3>Request Received!</h3>
+                <p>Thank you! Our medical team will review your case and respond within 24 hours with a personalized treatment plan and cost estimate.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 PandaCare. All rights reserved. | <a href="index.html">Home</a> · <a href="faq.html">FAQ</a> · <a href="contact.html">Contact</a></p>
+    </footer>
+
+    <script>
+        async function handleSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = form.querySelector('.btn-submit');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    showSuccess();
+                } else {
+                    alert('Something went wrong. Please try emailing us directly at hello@pandacare.health');
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send My Request';
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                alert('Network error. Please check your connection and try again.');
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send My Request';
+                btn.disabled = false;
+            }
+        }
+
+        function showSuccess() {
+            document.getElementById('contactForm').style.display = 'none';
+            document.querySelector('.contact-form-wrapper h3').style.display = 'none';
+            document.querySelector('.contact-form-wrapper > p').style.display = 'none';
+            document.getElementById('formSuccess').classList.add('show');
+        }
+    </script>
+</body>
+</html>

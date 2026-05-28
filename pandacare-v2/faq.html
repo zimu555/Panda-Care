@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — PandaCare | Your Questions Answered</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0D9488;
+            --primary-dark: #0F766E;
+            --primary-light: #CCFBF1;
+            --accent: #F59E0B;
+            --dark: #0F172A;
+            --gray-900: #1E293B;
+            --gray-700: #334155;
+            --gray-500: #64748B;
+            --gray-300: #CBD5E1;
+            --gray-100: #F1F5F9;
+            --white: #FFFFFF;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            color: var(--dark);
+            line-height: 1.6;
+            background: var(--white);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-100);
+            padding: 16px 0;
+        }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--gray-700);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta {
+            background: var(--primary);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .nav-cta:hover { background: var(--primary-dark); }
+
+        /* Page Header */
+        .page-header {
+            padding: 140px 24px 60px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--primary-light) 0%, var(--white) 100%);
+        }
+        .page-header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+        .page-header p {
+            font-size: 18px;
+            color: var(--gray-500);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 24px 100px;
+        }
+
+        .faq-category {
+            margin-bottom: 48px;
+        }
+        .faq-category-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        .faq-category-title i {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .faq-item {
+            border: 1px solid var(--gray-100);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .faq-item:hover {
+            border-color: var(--gray-300);
+        }
+        .faq-item.active {
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(13,148,136,0.08);
+        }
+
+        .faq-question {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--dark);
+            background: var(--white);
+            transition: background 0.2s;
+        }
+        .faq-question:hover { background: var(--gray-100); }
+        .faq-item.active .faq-question { color: var(--primary-dark); }
+
+        .faq-question .arrow {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--gray-100);
+            color: var(--gray-500);
+            font-size: 12px;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .faq-item.active .faq-question .arrow {
+            background: var(--primary);
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 24px 24px;
+        }
+        .faq-answer p {
+            color: var(--gray-700);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .faq-answer ul {
+            color: var(--gray-700);
+            font-size: 15px;
+            line-height: 1.8;
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+        .faq-answer ul li { margin-bottom: 4px; }
+
+        /* CTA at bottom */
+        .faq-cta {
+            text-align: center;
+            background: var(--gray-100);
+            border-radius: 16px;
+            padding: 48px 32px;
+            margin-top: 60px;
+        }
+        .faq-cta h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+        .faq-cta p {
+            color: var(--gray-500);
+            margin-bottom: 24px;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { background: var(--primary-dark); }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: var(--gray-300);
+            padding: 40px 24px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer a { color: var(--gray-300); text-decoration: none; }
+        .footer a:hover { color: white; }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 28px; }
+            .nav-links { display: none; }
+            .faq-question { font-size: 15px; padding: 16px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                PandaCare
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#why-china">Why China</a></li>
+                <li><a href="index.html#how-it-works">How It Works</a></li>
+                <li><a href="faq.html" style="color: var(--primary);">FAQ</a></li>
+            </ul>
+            <a href="index.html#contact" class="nav-cta">Get Free Consultation</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Frequently Asked Questions</h1>
+        <p>Everything you need to know about getting medical treatment in China with PandaCare</p>
+    </section>
+
+    <!-- FAQ Content -->
+    <div class="faq-container">
+
+        <!-- Category: Getting Started -->
+        <div class="faq-category">
+            <div class="faq-category-title">
+                <i class="fa-solid fa-rocket"></i>
+                Getting Started
+            </div>
+
+            <div class="faq-item active">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How does PandaCare work?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>It's simple: you tell us about your medical needs, and we handle everything else. Our process:</p>
+                    <ul>
+                        <li><strong>Consultation</strong> — Share your condition and medical records with us (free)</li>
+                        <li><strong>Matching</strong> — We recommend the best hospital and specialist for your case</li>
+                        <li><strong>Planning</strong> — We arrange appointments, visa support, travel, and accommodation</li>
+                        <li><strong>Treatment</strong> — Your English-speaking companion accompanies you to every appointment</li>
+                        <li><strong>Follow-up</strong> — We provide translated medical reports and remote follow-up support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How long does the entire process take?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>From first contact to your appointment in China, it typically takes <strong>7-14 days</strong>. For urgent cases, we can fast-track to as few as 3-5 days. The treatment timeline depends on your specific needs — a health check may be done in one day, while surgery may require 1-3 weeks including recovery.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What medical conditions can you help with?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We cover a wide range of specialties including:</p>
+                    <ul>
+                        <li>Dental (implants, veneers, orthodontics)</li>
+                        <li>Ophthalmology (LASIK, cataract surgery)</li>
+                        <li>Orthopedics (joint replacement, spine surgery)</li>
+                        <li>Cardiology</li>
+                        <li>Oncology (second opinions, treatment plans)</li>
+                        <li>Traditional Chinese Medicine & rehabilitation</li>
+                        <li>Comprehensive health screening</li>
+                        <li>Cosmetic/plastic surgery</li>
+                    </ul>
+                    <p>If your condition isn't listed, contact us — we can likely help.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category: Cost & Payment -->
+        <div class="faq-category">
+            <div class="faq-category-title">
+                <i class="fa-solid fa-dollar-sign"></i>
+                Cost & Payment
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How much does treatment in China cost compared to my country?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>On average, you can save <strong>50-80%</strong> compared to the US, UK, Canada, or Australia. Some examples:</p>
+                    <ul>
+                        <li>Dental implant: $600–$1,200 (vs. $3,000–$5,000 in the US)</li>
+                        <li>Full health screening: $300–$800 (vs. $2,000+ in the US)</li>
+                        <li>MRI scan: $80–$150 (vs. $1,000–$3,000 in the US)</li>
+                        <li>Hip replacement: $8,000–$12,000 (vs. $40,000+ in the US)</li>
+                        <li>LASIK: $1,200–$2,000 (vs. $4,000–$6,000 in the US)</li>
+                    </ul>
+                    <p>These prices are at top-tier, JCI-accredited hospitals — not budget clinics.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What does PandaCare's service fee include?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Our service fee covers:</p>
+                    <ul>
+                        <li>Pre-trip consultation and treatment planning</li>
+                        <li>Hospital and doctor matching</li>
+                        <li>Appointment scheduling</li>
+                        <li>Dedicated English-speaking medical companion</li>
+                        <li>Real-time translation during all appointments</li>
+                        <li>Local transportation coordination</li>
+                        <li>Post-treatment report translation</li>
+                        <li>Follow-up communication with your doctor</li>
+                    </ul>
+                    <p>Medical fees, flights, and accommodation are billed separately and transparently.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What payment methods do you accept?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We accept international credit cards (Visa, Mastercard, Amex), PayPal, and bank wire transfer. Hospital fees can typically be paid by card directly at the hospital. We provide a transparent cost breakdown before you commit.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category: Travel & Visa -->
+        <div class="faq-category">
+            <div class="faq-category-title">
+                <i class="fa-solid fa-plane"></i>
+                Travel & Visa
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Do I need a visa to travel to China for medical treatment?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Most nationalities need a visa. However, China currently offers:</p>
+                    <ul>
+                        <li><strong>144-hour visa-free transit</strong> in many cities (enough for short treatments)</li>
+                        <li><strong>15-day visa-free</strong> for citizens of many countries</li>
+                        <li><strong>Medical visa (M visa)</strong> for longer treatments</li>
+                    </ul>
+                    <p>We provide an official hospital invitation letter and assist with your visa application. Many of our patients use the visa-free transit policy for routine treatments.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Do you help with flights and accommodation?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! We offer:</p>
+                    <ul>
+                        <li>Flight booking assistance and route recommendations</li>
+                        <li>Airport pickup and drop-off service</li>
+                        <li>Hotel recommendations near your hospital (budget to luxury)</li>
+                        <li>Extended-stay apartment options for longer treatments</li>
+                    </ul>
+                    <p>We can also arrange sightseeing and cultural experiences during your recovery days.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Which cities in China do you operate in?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We partner with top hospitals in major cities including:</p>
+                    <ul>
+                        <li><strong>Beijing</strong> — Peking Union, Beijing Friendship Hospital</li>
+                        <li><strong>Shanghai</strong> — Huashan Hospital, Ruijin Hospital</li>
+                        <li><strong>Guangzhou</strong> — Sun Yat-sen Memorial Hospital</li>
+                        <li><strong>Shenzhen</strong> — HKU-Shenzhen Hospital</li>
+                        <li><strong>Chengdu, Hangzhou, Xi'an</strong> — and more</li>
+                    </ul>
+                    <p>We match you with the best hospital for your specific condition, regardless of city.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category: Safety & Quality -->
+        <div class="faq-category">
+            <div class="faq-category-title">
+                <i class="fa-solid fa-shield-halved"></i>
+                Safety & Quality
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How do I know the hospitals are safe and qualified?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We only partner with:</p>
+                    <ul>
+                        <li><strong>Class-A Tertiary Hospitals</strong> — China's highest tier (equivalent to major academic medical centers)</li>
+                        <li><strong>JCI-accredited facilities</strong> — the international gold standard for healthcare quality</li>
+                        <li>Hospitals with dedicated <strong>international patient departments</strong></li>
+                    </ul>
+                    <p>Many of our partner hospitals have doctors trained at Harvard, Johns Hopkins, Mayo Clinic, and other top institutions. We verify credentials for every doctor we recommend.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What if something goes wrong during treatment?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Your safety is our top priority:</p>
+                    <ul>
+                        <li>Your companion is with you at every medical interaction</li>
+                        <li>We have 24/7 emergency support in English</li>
+                        <li>All partner hospitals have international patient insurance acceptance</li>
+                        <li>We recommend travel medical insurance and can help you find the right policy</li>
+                        <li>Post-treatment complications are handled by the same medical team with our ongoing translation support</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Will my doctor back home accept the medical records from China?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes. We provide fully translated medical records in English, including imaging results, lab work, surgical reports, and medication lists. These follow international medical documentation standards and are readily accepted by healthcare providers worldwide. We can also arrange direct communication between your Chinese doctor and your home physician if needed.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category: Language & Communication -->
+        <div class="faq-category">
+            <div class="faq-category-title">
+                <i class="fa-solid fa-comments"></i>
+                Language & Communication
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    I don't speak Chinese. Will that be a problem?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Not at all — that's exactly what we're here for. Your dedicated medical companion:</p>
+                    <ul>
+                        <li>Speaks fluent English (and often other languages)</li>
+                        <li>Has medical terminology training</li>
+                        <li>Accompanies you to <strong>every</strong> appointment, test, and procedure</li>
+                        <li>Translates in real-time between you and your medical team</li>
+                        <li>Helps you navigate daily life (ordering food, transportation, etc.)</li>
+                    </ul>
+                    <p>Many of our partner hospitals also have English-speaking staff in their international departments.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How do I communicate with PandaCare before my trip?
+                    <span class="arrow"><i class="fa-solid fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We're available through multiple channels:</p>
+                    <ul>
+                        <li><strong>Email</strong> — hello@pandacare.health (response within 12 hours)</li>
+                        <li><strong>Live chat</strong> — on our website during business hours</li>
+                        <li><strong>WhatsApp</strong> — for quick questions and updates</li>
+                        <li><strong>Video call</strong> — for detailed consultations (by appointment)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="faq-cta">
+            <h3>Still have questions?</h3>
+            <p>Our team is happy to answer any questions about your medical journey to China.</p>
+            <a href="index.html#contact" class="btn-primary"><i class="fa-solid fa-envelope"></i> Contact Us</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 PandaCare. All rights reserved. | <a href="index.html">Home</a> · <a href="faq.html">FAQ</a> · <a href="index.html#contact">Contact</a></p>
+    </footer>
+
+    <script>
+        function toggleFaq(el) {
+            const item = el.parentElement;
+            const wasActive = item.classList.contains('active');
+            
+            // Close all items in the same category
+            const category = item.closest('.faq-category');
+            category.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            
+            // Toggle clicked item
+            if (!wasActive) {
+                item.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
